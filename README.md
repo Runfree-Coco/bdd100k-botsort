@@ -20,7 +20,7 @@ Fine-tunes YOLOv8 on BDD100K vehicle detection and pairs it with a customized **
 Evaluated on BDD100K val set (200 sequences, 5 fps dashcam footage).
 
 ##Visualization
-[动画表情]
+<img src="469a97c29dd3f93fe22e884ea4d41430.gif" width="600">
 
 ## Key Contributions
 

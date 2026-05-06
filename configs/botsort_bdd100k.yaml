@@ -1,0 +1,33 @@
+# BoT-SORT optimal hyperparameters for BDD100K vehicle tracking
+# Validated on BDD100K val set (200 sequences, 5 fps dashcam footage)
+# Final result: MOTA=40.07%, IDF1=43.51%, HOTA=37.74%, AssA=43.20%
+
+tracker:
+  track_thresh: 0.45          # global detection confidence threshold
+  track_buffer: 90            # max frames a track is kept without detection (5fps → 18s)
+  match_thresh: 0.85          # IoU threshold for primary association
+  second_match_thresh: 0.50   # IoU threshold for low-score second-stage association
+  mot20: true                 # dense-scene matching mode (recommended for BDD100K)
+  frame_rate: 5
+
+# Per-class track initialization thresholds
+# Rare/small categories need lower thresholds to improve recall
+cls_track_thresh:
+  car:        0.45
+  truck:      0.40
+  bus:        0.40
+  motorcycle: 0.25   # severely under-detected; large reduction necessary
+  bicycle:    0.25   # severely under-detected; large reduction necessary
+
+detection:
+  min_box_area: 200           # minimum bbox area in pixels (w*h); filters tiny noise
+  min_conf: 0.10              # hard floor; detections below this are always discarded
+
+post_processing:
+  min_track_frames: 2         # tracks appearing in ≤N frames are removed as FP
+  rare_classes_exempt: true   # motorcycle/bicycle are exempt from the above filter
+
+# DTI interpolation note:
+# DTI was tested but found to be harmful at 5 fps dashcam footage.
+# It generates large numbers of false positives in gaps, dropping MOTA by ~11%.
+# n_dti: 0 (disabled)
